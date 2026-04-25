@@ -12,6 +12,12 @@ export interface Product {
   images: string[];
 }
 
+export interface Category {
+  slug: string;
+  name: string;
+  url: string;
+}
+
 export interface ProductsResponse {
   products: Product[];
   total: number;

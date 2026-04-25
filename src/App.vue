@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import type { Product } from './types';
+import type { Product, Category } from './types';
 import apiService from './services/api';
 import { useCartStore } from './stores/cart';
 import { useAuthStore } from './stores/auth';
@@ -16,7 +16,7 @@ import AuthModal from './components/AuthModal.vue';
 
 // State
 const products = ref<Product[]>([]);
-const categories = ref<string[]>([]);
+const categories = ref<Category[]>([]);
 const isLoading = ref(true);
 const error = ref('');
 

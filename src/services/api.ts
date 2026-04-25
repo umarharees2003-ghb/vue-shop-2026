@@ -1,4 +1,4 @@
-import type { Product, ProductsResponse, AuthResponse, LoginCredentials } from '../types';
+import type { Product, ProductsResponse, AuthResponse, LoginCredentials, Category } from '../types';
 
 const BASE_URL = 'https://dummyjson.com';
 
@@ -38,8 +38,8 @@ class ApiService {
     return this.fetchData<ProductsResponse>(`/products/category/${category}?limit=${limit}`);
   }
 
-  async getAllCategories(): Promise<string[]> {
-    return this.fetchData<string[]>('/products/categories');
+  async getAllCategories(): Promise<Category[]> {
+    return this.fetchData<Category[]>('/products/categories');
   }
 
   // Authentication
