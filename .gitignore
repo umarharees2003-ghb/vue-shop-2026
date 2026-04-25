@@ -1,0 +1,15 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+
+# Vite/TS build info
+.tmp
+*.tsbuildinfo
+
+# Editor folders
+.vscode/*
+!.vscode/extensions.json
+.idea
+.shorthand
