@@ -1,0 +1,14 @@
+The aim 01: Initialize the core project features including Auth, Cart, and Theme stores.
+Actual prompt: plz help to finish the current project
+
+The aim 02: Fix TypeScript errors and accessibility issues in modals.
+Actual prompt: correct all issues
+
+The aim 03: Resolve TypeScript configuration for project references.
+Actual prompt: fix { (for tsconfig files)
+
+The aim 04: Prepare project for GitHub publishing and deployment.
+Actual prompt: how to publish this project in github
+
+The aim 05: Fix Category filtering logic and API data mismatch.
+Actual prompt: why the categories section not properly working
