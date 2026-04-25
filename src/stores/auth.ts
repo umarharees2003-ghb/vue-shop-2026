@@ -37,24 +37,21 @@ export const useAuthStore = defineStore('auth', {
     },
     async loadFromLocalStorage() {
       const saved = localStorage.getItem('auth');
-      if (saved) {
-        try {
-          const data = JSON.parse(saved);
-          this.token = data.token;
-          this.isAuthenticated = !!data.token;
+      if (!saved) return;
 
-          if (this.token) {
-            try {
-              const response = await apiService.getCurrentUser(this.token);
-              this.user = response;
-              this.isAuthenticated = true;
-            } catch (e) {
-              this.logout();
-            }
-          }
-        } catch {
-          this.logout();
-        }
+      try {
+        const data = JSON.parse(saved);
+        this.token = data.token;
+
+        if (!this.token) return;
+
+        // Verify the token with the server to get fresh user data
+        const response = await apiService.getCurrentUser(this.token);
+        this.user = response;
+        this.isAuthenticated = true;
+      } catch (error) {
+        console.error('Failed to restore session:', error);
+        this.logout(); // Clear invalid data
       }
     },
   },
