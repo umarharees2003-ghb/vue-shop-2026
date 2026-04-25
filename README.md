@@ -1,16 +1,19 @@
 # VueShop - E-Commerce SPA
 
-A modern Single Page Application built with Vue 3, TypeScript, and Tailwind CSS, consuming data from the DummyJSON API.
+A high-performance, responsive Single Page Application built with **Vue 3**, **TypeScript**, and **Tailwind CSS**. This project demonstrates modern frontend patterns, including state persistence, complex filtering, and secure authentication flows using the DummyJSON API.
+
+## 🚀 Live Demo
+Check out the live application: [https://umarharees2003-ghb.github.io/vue-shop-2026/](https://umarharees2003-ghb.github.io/vue-shop-2026/)
 
 ## Features
 
 - **Product Listing**: Browse products from DummyJSON API
 - **Search & Filter**: Search products by name and filter by category
 - **Product Details**: View detailed product information in a modal
-- **Shopping Cart**: Add products to cart with quantity management (persisted in localStorage)
-- **Authentication**: Login simulation using DummyJSON Auth API (persisted in localStorage)
-- **Dark Mode**: Toggle between light and dark themes
-- **Responsive Design**: Fully responsive layout for mobile, tablet, and desktop
+- **Shopping Cart**: Full cart lifecycle with quantity management and subtotal calculation (persisted via Pinia).
+- **Authentication**: Secure login simulation with JWT-like token handling and session restoration.
+- **Dark Mode**: Automatic theme detection and manual toggle with persistent settings.
+- **Responsive Design**: Optimized for everything from mobile phones to high-resolution desktops.
 
 ## Tech Stack
 
@@ -30,6 +33,10 @@ A modern Single Page Application built with Vue 3, TypeScript, and Tailwind CSS,
 ### Installation
 
 1. Clone the repository
+   ```bash
+   git clone https://github.com/umarharees2003-ghb/vue-shop-2026.git
+   cd vue-shop-2026
+   ```
 2. Install dependencies:
    ```bash
    npm install
@@ -52,6 +59,14 @@ npm run build
 
 ```bash
 npm run preview
+```
+
+### Deployment
+
+This project is configured for easy deployment to GitHub Pages:
+
+```bash
+npm run deploy
 ```
 
 ## Project Structure
