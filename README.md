@@ -10,6 +10,7 @@ Check out the live application: [https://umarharees2003-ghb.github.io/vue-shop-2
 - **Product Listing**: Browse products from DummyJSON API
 - **Search & Filter**: Search products by name and filter by category
 - **Product Details**: View detailed product information in a modal
+- **Checkout Simulation**: Multi-step checkout process with form validation and simulated payment processing.
 - **Shopping Cart**: Full cart lifecycle with quantity management and subtotal calculation (persisted via Pinia).
 - **Authentication**: Secure login simulation with JWT-like token handling and session restoration.
 - **Dark Mode**: Automatic theme detection and manual toggle with persistent settings.
@@ -78,6 +79,7 @@ src/
 │   ├── ProductCard.vue
 │   ├── FilterBar.vue
 │   ├── ProductModal.vue
+│   ├── CheckoutModal.vue
 │   ├── CartModal.vue
 │   └── AuthModal.vue
 ├── services/          # API services

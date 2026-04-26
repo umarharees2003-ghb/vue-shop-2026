@@ -21,6 +21,11 @@ const handleCategorySelect = (event: Event) => {
   const target = event.target as HTMLSelectElement;
   emit('update:selected-category', target.value);
 };
+
+const clearFilters = () => {
+  emit('update:search-query', '');
+  emit('update:selected-category', '');
+};
 </script>
 
 <template>
@@ -55,7 +60,7 @@ const handleCategorySelect = (event: Event) => {
 
     <button 
       v-if="searchQuery || selectedCategory"
-      @click="emit('update:search-query', ''); emit('update:selected-category', '')"
+      @click="clearFilters"
       class="text-sm text-blue-600 dark:text-blue-400 hover:underline flex items-center justify-center whitespace-nowrap"
     >
       Clear Filters

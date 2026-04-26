@@ -8,6 +8,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'close'): void;
+  (e: 'checkout'): void;
 }>();
 
 const cartStore = useCartStore();
@@ -87,7 +88,10 @@ onUnmounted(() => {
                   <p>${{ cartStore.totalPrice.toFixed(2) }}</p>
                 </div>
                 <div class="mt-6">
-                  <button class="w-full flex justify-center items-center px-6 py-3 rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700">Checkout</button>
+                  <button 
+                    class="w-full flex justify-center items-center px-6 py-3 rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700"
+                    @click="$emit('checkout')"
+                  >Checkout</button>
                 </div>
               </div>
             </div>

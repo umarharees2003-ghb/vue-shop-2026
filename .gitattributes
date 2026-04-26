@@ -1,0 +1,4 @@
+# Set the default behavior to handle all files as text and normalize line endings to LF on check-in
+* text=auto
+
+*.vue text eol=lf

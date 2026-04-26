@@ -12,6 +12,7 @@ import ProductCard from './components/ProductCard.vue';
 import FilterBar from './components/FilterBar.vue';
 import ProductModal from './components/ProductModal.vue';
 import CartModal from './components/CartModal.vue';
+import CheckoutModal from './components/CheckoutModal.vue';
 import AuthModal from './components/AuthModal.vue';
 
 // State
@@ -27,7 +28,21 @@ const isCartOpen = ref(false);
 const isAuthOpen = ref(false);
 const selectedProduct = ref<Product | null>(null);
 const isProductModalOpen = ref(false);
+const isCheckoutOpen = ref(false);
 
+const handleCheckout = () => {
+  isCartOpen.value = false;
+  isCheckoutOpen.value = true;
+};
+
+const handleCheckoutClose = () => {
+  isCheckoutOpen.value = false;
+};
+
+const handleCheckoutSuccess = () => {
+  isCheckoutOpen.value = false;
+  cartStore.clearCart();
+};
 // Stores
 const cartStore = useCartStore();
 const authStore = useAuthStore();
@@ -183,9 +198,18 @@ onMounted(async () => {
       @close="closeProductModal"
     />
 
+
     <CartModal 
       :is-open="isCartOpen"
       @close="isCartOpen = false"
+      @checkout="handleCheckout"
+    />
+
+    <CheckoutModal
+      :is-open="isCheckoutOpen"
+      :total="cartStore.totalPrice"
+      @close="handleCheckoutClose"
+      @success="handleCheckoutSuccess"
     />
 
     <AuthModal 
