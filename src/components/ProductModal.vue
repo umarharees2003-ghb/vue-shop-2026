@@ -118,7 +118,7 @@ onUnmounted(() => {
             </div>
 
             <!-- Price and Actions -->
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between mt-8 sticky bottom-0 bg-white dark:bg-gray-800 py-4 border-t border-gray-100 dark:border-gray-700">
               <div>
                 <span class="text-3xl font-bold text-gray-900 dark:text-white">
                   ${{ product.price }}

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
+import { getStripe, createPaymentIntent } from '../services/stripe';
 
 const props = defineProps<{
   isOpen: boolean;
@@ -13,7 +14,11 @@ const emit = defineEmits<{
 
 const isProcessing = ref(false);
 const isSuccess = ref(false);
+const stripeError = ref('');
 
+// Stripe elements
+const stripe = ref<any>(null);
+const cardMounted = ref(false);
 
 const paymentMethods = [
   { label: 'Credit Card', value: 'card', icon: '💳' },
@@ -35,20 +40,73 @@ const form = reactive({
   cardCvv: '',
 });
 
+const initStripe = async () => {
+  if (cardMounted.value) return;
+  
+  try {
+    const stripeInstance = await getStripe();
+    if (stripeInstance) {
+      stripe.value = stripeInstance;
+      // In production, you'd create a PaymentIntent on your backend
+      // and mount Stripe Elements here
+      cardMounted.value = true;
+    }
+  } catch (error) {
+    console.error('Stripe initialization error:', error);
+    stripeError.value = 'Stripe not configured. Add your API key in src/services/stripe.ts';
+  }
+};
+
 const handleSubmit = async () => {
   isProcessing.value = true;
+  stripeError.value = '';
 
-  // Simulate different payment method processing
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  try {
+    if (form.paymentMethod === 'card') {
+      // Real Stripe payment processing
+      const stripeInstance = await getStripe();
+      
+      if (stripeInstance) {
+        // In production: Create PaymentIntent on backend
+        await createPaymentIntent(Math.round(props.total * 100));
+        
+        // For demo, simulate successful payment
+        // In production: Use stripe.confirmCardPayment with clientSecret
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      } else {
+        // Fallback: Simulate payment if Stripe not configured
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    } else if (form.paymentMethod === 'paypal') {
+      // Redirect to PayPal (simulated)
+      await new Promise(resolve => setTimeout(resolve, 1500));
+    } else if (form.paymentMethod === 'cod') {
+      // Cash on delivery - no online payment
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    } else {
+      // Other payment methods (simulated)
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
 
-  isProcessing.value = false;
-  isSuccess.value = true;
+    isProcessing.value = false;
+    isSuccess.value = true;
 
-  // Notify parent to clear cart after a short delay
-  setTimeout(() => {
-    emit('success');
-  }, 1500);
+    setTimeout(() => {
+      emit('success');
+    }, 1500);
+  } catch (error: any) {
+    isProcessing.value = false;
+    stripeError.value = error.message || 'Payment failed. Please try again.';
+  }
 };
+
+// Initialize Stripe when card payment is selected
+import { watch } from 'vue';
+watch(() => form.paymentMethod, (method) => {
+  if (method === 'card') {
+    initStripe();
+  }
+});
 </script>
 
 <template>
@@ -74,6 +132,11 @@ const handleSubmit = async () => {
 
         <!-- Form State -->
         <form v-else @submit.prevent="handleSubmit" class="space-y-4">
+          <!-- Stripe Error Message -->
+          <div v-if="stripeError" class="p-3 bg-red-50 dark:bg-red-900/30 rounded-lg">
+            <p class="text-sm text-red-600 dark:text-red-400">{{ stripeError }}</p>
+          </div>
+
           <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Select Payment Method</label>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">

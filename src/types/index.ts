@@ -1,3 +1,11 @@
+export interface Review {
+  rating: number;
+  comment: string;
+  date: string;
+  reviewerName: string;
+  reviewerEmail: string;
+}
+
 export interface Product {
   id: number;
   title: string;
@@ -10,6 +18,7 @@ export interface Product {
   category: string;
   thumbnail: string;
   images: string[];
+  reviews?: Review[];
 }
 
 export interface Category {
@@ -48,12 +57,12 @@ export interface AuthResponse {
 }
 
 export interface AuthUser {
-  id: number;
-  username: string;
+  id: number | string;  // Support both number (DummyJSON) and string (Firebase)
+  username?: string;
   email: string;
   firstName: string;
   lastName: string;
-  gender: string;
-  image: string;
+  gender?: string;
+  image?: string;
   phone?: string;
 }
