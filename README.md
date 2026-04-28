@@ -1,80 +1,45 @@
-# VueShop - E-Commerce SPA
+# VueShop - My E-Commerce Side Project
 
-A high-performance, responsive Single Page Application built with **Vue 3**, **TypeScript**, and **Tailwind CSS**. This project demonstrates modern frontend patterns, including state persistence, complex filtering, and secure authentication flows using the DummyJSON API.
+Hey! So I built this little shopping app during my free time to learn Vue 3 better. It's nothing fancy, but it works and I'm pretty happy with how it turned out.
 
-## 🚀 Live Demo
-Check out the live application: [https://umarharees2003-ghb.github.io/vue-shop-2026/](https://umarharees2003-ghb.github.io/vue-shop-2026/)
+## What It Does
 
-## Features
+Basically, it's a fully functional e-commerce frontend. You can browse products, search for stuff, add things to your cart, and even go through a fake checkout process. The data comes from DummyJSON API (super useful for practice projects like this).
 
-- **Product Listing**: Browse products from DummyJSON API
-- **Search & Filter**: Search products by name and filter by category
-- **Product Details**: View detailed product information in a modal
-- **Checkout Simulation**: Multi-step checkout process with form validation and simulated payment processing.
-- **Shopping Cart**: Full cart lifecycle with quantity management and subtotal calculation (persisted via Pinia).
-- **Authentication**: Secure login simulation with JWT-like token handling and session restoration.
-- **Dark Mode**: Automatic theme detection and manual toggle with persistent settings.
-- **Responsive Design**: Optimized for everything from mobile phones to high-resolution desktops.
+I also threw in dark mode because... who doesn't love dark mode these days, right?
 
-## Tech Stack
+## Stuff I Learned Building This
 
-- Vue 3 (Composition API)
-- TypeScript
-- Vite
-- Tailwind CSS
-- Pinia (State Management)
+- Vue 3 Composition API (finally clicked for me)
+- Pinia for state management
+- TypeScript (still learning, but getting better)
+- Tailwind CSS (controversial opinion: it's actually pretty nice once you get used to it)
 
-## Getting Started
+## Try It Out
 
-### Prerequisites
+Live version here: [https://umarharees2003-ghb.github.io/vue-shop-2026/](https://umarharees2003-ghb.github.io/vue-shop-2026/)
 
-- Node.js 18+ 
-- npm 9+
-
-### Installation
-
-1. Clone the repository
-   ```bash
-   git clone https://github.com/umarharees2003-ghb/vue-shop-2026.git
-   cd vue-shop-2026
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-4. Open your browser and navigate to `http://localhost:5173`
-
-### Build for Production
+## Quick Start
 
 ```bash
-npm run build
+# Clone it
+git clone https://github.com/umarharees2003-ghb/vue-shop-2026.git
+cd vue-shop-2026
+
+# Install stuff
+npm install
+
+# Run it
+npm run dev
 ```
 
-### Preview Production Build
+Then hit `http://localhost:5173` in your browser.
 
-```bash
-npm run preview
-```
-
-### Deployment
-
-This project is configured for easy deployment to GitHub Pages:
-
-```bash
-npm run deploy
-```
-
-## Project Structure
+## What's Inside
 
 ```
 src/
-├── components/       # Reusable Vue components
+├── components/       # Vue components
 │   ├── NavBar.vue
 │   ├── ProductCard.vue
 │   ├── FilterBar.vue
@@ -82,33 +47,37 @@ src/
 │   ├── CheckoutModal.vue
 │   ├── CartModal.vue
 │   └── AuthModal.vue
-├── services/          # API services
+├── services/         # API calls
 │   └── api.ts
-├── stores/            # Pinia stores
+├── stores/           # Pinia stores
 │   ├── cart.ts
 │   ├── auth.ts
 │   └── theme.ts
-├── types/             # TypeScript interfaces
+├── types/            # TypeScript types
 │   └── index.ts
-├── App.vue            # Main application component
-├── main.ts            # Application entry point
-└── style.css          # Global styles with Tailwind
+├── App.vue
+├── main.ts
+└── style.css
 ```
 
-## Demo Credentials
+## Test Login
 
+If you want to test the auth stuff:
 - Username: `kminchelle`
 - Password: `0lelplR`
 
-## API Reference
+## Tech Used
 
-This project uses the [DummyJSON](https://dummyjson.com/) API:
+- Vue 3
+- TypeScript
+- Vite
+- Tailwind CSS
+- Pinia
 
-- Products: `GET /products`
-- Categories: `GET /products/categories`
-- Search: `GET /products/search?q={query}`
-- Login: `POST /auth/login`
+## API
+
+Huge shoutout to [DummyJSON](https://dummyjson.com/) - made this project so much easier. Check their docs if you want to extend this.
 
 ## License
 
-MIT
+MIT - do whatever you want with this!
