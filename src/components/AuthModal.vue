@@ -134,14 +134,6 @@ onUnmounted(() => {
             </p>
           </div>
 
-          <!-- Firebase Setup Notice -->
-          <div v-if="!isRegisterMode" class="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/30 rounded-lg">
-            <p class="text-sm text-yellow-700 dark:text-yellow-400 font-medium">⚠️ Firebase Not Configured</p>
-            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-              To enable real authentication, add your Firebase credentials in <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">src/services/firebase.ts</code>
-            </p>
-          </div>
-
           <!-- Error Message -->
           <div v-if="error" class="mb-4 p-3 bg-red-50 dark:bg-red-900/30 rounded-lg">
             <p class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
