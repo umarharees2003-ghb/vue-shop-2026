@@ -23,7 +23,7 @@ const emit = defineEmits<{
         <!-- Logo -->
         <div class="flex-shrink-0 flex items-center">
           <a href="#" class="text-2xl font-bold text-blue-600 dark:text-blue-400">
-            VueShop
+            SwiftCart
           </a>
         </div>
 

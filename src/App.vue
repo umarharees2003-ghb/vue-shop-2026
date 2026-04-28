@@ -1,13 +1,20 @@
 <script setup lang="ts">
+// ============ Vue Core Imports ============
 import { ref, onMounted, computed } from 'vue';
+
+// ============ Type Definitions ============
 import type { Product, Category } from './types';
+
+// ============ Services ============
 import apiService from './services/api';
+
+// ============ Pinia Stores ============
 import { useCartStore } from './stores/cart';
 import { useAuthStore } from './stores/auth';
 import { useThemeStore } from './stores/theme';
 import { useViewedStore } from './types/viewed';
 
-// Components
+// ============ Vue Components ============
 import NavBar from './components/NavBar.vue';
 import ProductCard from './components/ProductCard.vue';
 import FilterBar from './components/FilterBar.vue';
@@ -17,44 +24,48 @@ import CheckoutModal from './components/CheckoutModal.vue';
 import AuthModal from './components/AuthModal.vue';
 import RecentlyViewed from './components/RecentlyViewed.vue';
 
-// State
+
+// ============ Application State ============
+
+// Product & Category Data
 const products = ref<Product[]>([]);
 const categories = ref<Category[]>([]);
+
+// UI State - Loading & Error Handling
 const isLoading = ref(true);
 const error = ref('');
 
+// Filter State
 const searchQuery = ref('');
 const selectedCategory = ref('');
 
+// Modal Visibility State
 const isCartOpen = ref(false);
 const isAuthOpen = ref(false);
-const selectedProduct = ref<Product | null>(null);
 const isProductModalOpen = ref(false);
 const isCheckoutOpen = ref(false);
 
-const handleCheckout = () => {
-  isCartOpen.value = false;
-  isCheckoutOpen.value = true;
-};
+// Currently Selected Product (for modal display)
+const selectedProduct = ref<Product | null>(null);
 
-const handleCheckoutClose = () => {
-  isCheckoutOpen.value = false;
-};
 
-const handleCheckoutSuccess = () => {
-  isCheckoutOpen.value = false;
-  cartStore.clearCart();
-};
-// Stores
+// ============ Store Instances ============
 const cartStore = useCartStore();
 const authStore = useAuthStore();
 const themeStore = useThemeStore();
 const viewedStore = useViewedStore();
 
-// Computed
+
+// ============ Computed Properties ============
+
+/**
+ * Filters products based on search query and selected category
+ * Provides reactive filtering for the product grid
+ */
 const filteredProducts = computed(() => {
   let result = products.value;
 
+  // Filter by search query (title or description)
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase();
     result = result.filter(p => 
@@ -63,6 +74,7 @@ const filteredProducts = computed(() => {
     );
   }
   
+  // Filter by selected category
   if (selectedCategory.value) {
     result = result.filter(p => p.category === selectedCategory.value);
   }
@@ -70,7 +82,13 @@ const filteredProducts = computed(() => {
   return result;
 });
 
-// Methods
+
+// ============ Data Loading Methods ============
+
+/**
+ * Fetches products from the API
+ * Handles loading state and error management
+ */
 const loadProducts = async () => {
   isLoading.value = true;
   error.value = '';
@@ -86,6 +104,9 @@ const loadProducts = async () => {
   }
 };
 
+/**
+ * Loads available categories for the filter bar
+ */
 const loadCategories = async () => {
   try {
     categories.value = await apiService.getAllCategories();
@@ -94,14 +115,26 @@ const loadCategories = async () => {
   }
 };
 
+
+// ============ Event Handlers ============
+
+/**
+ * Handles search input from the navigation bar
+ */
 const handleSearch = (query: string) => {
   searchQuery.value = query;
 };
 
+/**
+ * Handles category filter changes from the filter bar
+ */
 const handleCategoryChange = (category: string) => {
   selectedCategory.value = category;
 };
 
+/**
+ * Returns an emoji for a given category (for visual appeal)
+ */
 const getCategoryEmoji = (category: string): string => {
   const emojis: Record<string, string> = {
     'smartphones': '📱',
@@ -128,24 +161,68 @@ const getCategoryEmoji = (category: string): string => {
   return emojis[category] || '📦';
 };
 
+
+// ============ Modal Management ============
+
+/**
+ * Opens the product detail modal
+ * Also adds the product to recently viewed
+ */
 const openProductModal = (product: Product) => {
   selectedProduct.value = product;
   isProductModalOpen.value = true;
   viewedStore.addProduct(product);
 };
 
+/**
+ * Closes the product detail modal
+ */
 const closeProductModal = () => {
   isProductModalOpen.value = false;
   selectedProduct.value = null;
 };
 
-// Lifecycle
+
+// ============ Checkout Flow ============
+
+/**
+ * Initiates checkout by closing cart and opening checkout
+ */
+const handleCheckout = () => {
+  isCartOpen.value = false;
+  isCheckoutOpen.value = true;
+};
+
+/**
+ * Closes the checkout modal
+ */
+const handleCheckoutClose = () => {
+  isCheckoutOpen.value = false;
+};
+
+/**
+ * Handles successful checkout - clears cart and closes modal
+ */
+const handleCheckoutSuccess = () => {
+  isCheckoutOpen.value = false;
+  cartStore.clearCart();
+};
+
+
+// ============ Lifecycle Hooks ============
+
+/**
+ * Initialize the application on mount
+ * Loads persisted data and fetches initial data
+ */
 onMounted(async () => {
+  // Load persisted state from localStorage
   cartStore.loadFromLocalStorage();
   await authStore.initAuth();
   themeStore.loadFromLocalStorage();
   viewedStore.loadFromLocalStorage();
   
+  // Fetch initial data in parallel
   await Promise.all([loadProducts(), loadCategories()]);
 });
 </script>
@@ -162,8 +239,8 @@ onMounted(async () => {
       <div class="relative mb-12 rounded-2xl overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 text-white">
         <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
         <div class="relative px-8 py-16 md:py-24 text-center">
-          <h1 class="text-3xl md:text-5xl font-bold mb-4 animate-fade-in">
-            Welcome to the E-Commerce Online Store
+          <h1 class="text-4xl md:text-7xl font-black mb-6 tracking-tighter drop-shadow-2xl animate-fade-in">
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-white">Welcome to SwiftCart</span>
           </h1>
           <p class="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
             Discover amazing products at great prices. Shop now for exclusive deals and unbeatable quality!
@@ -325,7 +402,7 @@ onMounted(async () => {
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <!-- Company Info -->
           <div class="col-span-1 md:col-span-2">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">E-Commerce Store</h3>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">SwiftCart</h3>
             <p class="text-gray-600 dark:text-gray-400 mb-4">
               Your one-stop shop for amazing products at great prices. We deliver quality products directly to your door.
             </p>
@@ -367,7 +444,7 @@ onMounted(async () => {
 
         <div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 text-center">
           <p class="text-gray-500 dark:text-gray-400 text-sm">
-            © 2026 E-Commerce Store. All rights reserved. Built with Vue 3, TypeScript & Tailwind CSS.
+            © 2026 SwiftCart. All rights reserved. Built with Vue 3, TypeScript & Tailwind CSS.
           </p>
         </div>
       </div>
