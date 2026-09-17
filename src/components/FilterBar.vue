@@ -5,11 +5,13 @@ defineProps<{
   categories: Category[];
   selectedCategory: string;
   searchQuery: string;
+  sortBy: string;
 }>();
 
 const emit = defineEmits<{
   (e: 'update:search-query', value: string): void;
   (e: 'update:selected-category', value: string): void;
+  (e: 'update:sort-by', value: string): void;
 }>();
 
 const handleSearchInput = (event: Event) => {
@@ -22,9 +24,15 @@ const handleCategorySelect = (event: Event) => {
   emit('update:selected-category', target.value);
 };
 
+const handleSortSelect = (event: Event) => {
+  const target = event.target as HTMLSelectElement;
+  emit('update:sort-by', target.value);
+};
+
 const clearFilters = () => {
   emit('update:search-query', '');
   emit('update:selected-category', '');
+  emit('update:sort-by', 'featured');
 };
 </script>
 
@@ -58,8 +66,22 @@ const clearFilters = () => {
       </select>
     </div>
 
+    <div class="sm:w-56">
+      <select
+        :value="sortBy"
+        @change="handleSortSelect"
+        class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors sm:text-sm appearance-none cursor-pointer"
+      >
+        <option value="featured">Featured</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="rating">Top Rated</option>
+        <option value="discount">Best Discount</option>
+      </select>
+    </div>
+
     <button 
-      v-if="searchQuery || selectedCategory"
+      v-if="searchQuery || selectedCategory || sortBy !== 'featured'"
       @click="clearFilters"
       class="text-sm text-blue-600 dark:text-blue-400 hover:underline flex items-center justify-center whitespace-nowrap"
     >
