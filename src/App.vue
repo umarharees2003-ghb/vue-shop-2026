@@ -38,6 +38,7 @@ const error = ref('');
 // Filter State
 const searchQuery = ref('');
 const selectedCategory = ref('');
+const selectedSort = ref('featured');
 
 // Modal Visibility State
 const isCartOpen = ref(false);
@@ -63,7 +64,7 @@ const viewedStore = useViewedStore();
  * Provides reactive filtering for the product grid
  */
 const filteredProducts = computed(() => {
-  let result = products.value;
+  let result = [...products.value];
 
   // Filter by search query (title or description)
   if (searchQuery.value) {
@@ -77,6 +78,24 @@ const filteredProducts = computed(() => {
   // Filter by selected category
   if (selectedCategory.value) {
     result = result.filter(p => p.category === selectedCategory.value);
+  }
+
+  // Sort results
+  switch (selectedSort.value) {
+    case 'price-low':
+      result.sort((a, b) => a.price - b.price);
+      break;
+    case 'price-high':
+      result.sort((a, b) => b.price - a.price);
+      break;
+    case 'rating':
+      result.sort((a, b) => b.rating - a.rating);
+      break;
+    case 'discount':
+      result.sort((a, b) => b.discountPercentage - a.discountPercentage);
+      break;
+    default:
+      break;
   }
   
   return result;
@@ -130,6 +149,13 @@ const handleSearch = (query: string) => {
  */
 const handleCategoryChange = (category: string) => {
   selectedCategory.value = category;
+};
+
+/**
+ * Handles sorting changes from the filter bar
+ */
+const handleSortChange = (sort: string) => {
+  selectedSort.value = sort;
 };
 
 /**
@@ -322,8 +348,10 @@ onMounted(async () => {
         :categories="categories"
         :selected-category="selectedCategory"
         :search-query="searchQuery"
+        :sort-by="selectedSort"
         @update:search-query="handleSearch"
         @update:selected-category="handleCategoryChange"
+        @update:sort-by="handleSortChange"
       />
 
       <!-- Loading State with Skeleton -->
